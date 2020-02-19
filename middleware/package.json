@@ -1,0 +1,14 @@
+{
+  "name": "middleware",
+  "version": "1.0.0",
+  "description": "This is the middleware of children's stock market app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Avik Chakraborty",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
