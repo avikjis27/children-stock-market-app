@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: middleware-deployment
+  labels:
+    app: middleware
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: middleware
+  template:
+    metadata:
+      labels:
+        app: middleware
+    spec:
+      containers:
+      - name: middleware
+        image: middleware
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 9000
+        env:
+        - name: TODAY_SERVICE_EP
+          value: "http://today-service"
+        - name: BITCOIN_SERVICE_EP
+          value: "http://bitcoin-service"
+        - name: PORT
+          value: "9000"
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: middleware-service
+spec:
+    selector:
+        app: middleware
+    type: NodePort
+    ports:
+      - protocol: TCP
+        port: 80
+        targetPort: 9000

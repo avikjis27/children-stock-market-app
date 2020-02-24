@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bitcoin-deployment
+  labels:
+    app: bitcoin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bitcoin
+  template:
+    metadata:
+      labels:
+        app: bitcoin
+    spec:
+      containers:
+        - name: bitcoin
+          image: bitcoin
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5000
+          env:
+            - name: TYPE
+              value: "bitcoin"
+            - name: PORT
+              value: "5000"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bitcoin-service
+spec:
+  selector:
+    app: bitcoin
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000

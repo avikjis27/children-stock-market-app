@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: today-deployment
+  labels:
+    app: today
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: today
+  template:
+    metadata:
+      labels:
+        app: today
+    spec:
+      containers:
+      - name: today
+        image: today
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 6000
+        env:
+        - name: "TYPE"
+          value: "today"
+        - name: "PORT"
+          value: "6000"
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: today-service
+spec:
+    selector:
+        app: today
+    type: NodePort
+    ports:
+      - protocol: TCP
+        port: 80
+        targetPort: 6000
